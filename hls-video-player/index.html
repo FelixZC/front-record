@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HLS Video Player</title>
+    <!-- 引入hls.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+<video id="videoPlayer" controls style="width: 100%; max-width: 800px;"></video>
+
+<script>
+    // 当页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        var video = document.getElementById('videoPlayer');
+
+        // 初始化HLS.js
+        if(Hls.isSupported()) {
+            var hls = new Hls();
+            // 加载m3u8播放列表文件
+            hls.loadSource('https://your-stream-url-here.m3u8');
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                // 开始播放视频
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // 对于不支持Hls.js但原生支持HLS的浏览器
+            video.src = 'https://your-stream-url-here.m3u8';
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        } else {
+            console.error('This browser does not support HLS natively or via hls.js');
+        }
+    });
+</script>
+
+</body>
+</html>

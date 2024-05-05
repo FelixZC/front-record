@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Video Chat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>WebRTC Video Chat</h1>
+    </header>
+    <main>
+        <section class="video-container">
+            <div class="self-video">
+                <video id="myVideo" autoplay muted playsinline></video>
+                <div class="video-controls">
+                    <button class="video-control" title="Mute"><i class="fas fa-volume-mute"></i></button>
+                    <button class="video-control" title="Play/Pause"><i class="fas fa-play"></i></button>
+                </div>
+                <p class="username-tag">You</p>
+            </div>
+            <div id="peerVideos" class="flex-center">
+                <!-- Peer videos will be appended here -->
+            </div>
+        </section>
+        <!-- 聊天界面 -->
+        <section id="chatSection">
+            <ul id="chatMessages"></ul>
+            <form id="chatForm">
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button type="submit">Send</button>
+            </form>
+        </section>
+        <div id="status">正在初始化...</div>
+        <div id="chatContainer">
+            <ul id="chatMessages"></ul>
+            <input type="text" id="messageInput" placeholder="Type your message...">
+            <button id="sendMessage">Send</button>
+        </div>
+    </main>
+    <script src="https://cdn.socket.io/4.2.0/socket.io.min.js"></script>
+    <script src="./web-rtc-chat.js"></script>
+</body>
+
+</html>
+<style>
+    /* Add styles for new elements */
+    .video-container {
+        /* ... existing styles ... */
+        position: relative;
+    }
+
+    .self-video {
+        position: relative;
+        width: 200px;
+        height: 150px;
+        margin: 10px;
+    }
+
+    .video-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .video-control {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        cursor: pointer;
+        margin: 0 5px;
+    }
+
+
+    .username-tag {
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 2px 5px;
+        font-size: 0.8em;
+    }
+
+    #chatContainer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        height: 200px;
+        overflow-y: auto;
+    }
+
+    #chatMessages {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #chatMessages li {
+        padding: 5px;
+        margin-bottom: 5px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+
+    #messageInput {
+        flex: 1;
+        padding: 5px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    #sendMessage {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    #chatSection {
+        height: 300px;
+        overflow-y: auto;
+        margin-top: 20px;
+    }
+
+    #chatForm button {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>

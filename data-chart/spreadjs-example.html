@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpreadJS 丰富功能示例</title>
+    <!-- 引入SpreadJS样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/@grapecity/spread-sheets@latest/dist/css/gc.spread.sheets.excel2016blue.css" />
+    <style>
+        /* 可选：自定义样式 */
+        body { margin: 20px; }
+    </style>
+</head>
+<body>
+    <!-- SpreadJS容器 -->
+    <div id="ss" style="height: 600px;"></div>
+
+    <!-- 引入SpreadJS JavaScript库 -->
+    <script src="https://unpkg.com/@grapecity/spread-sheets@latest/dist/gc.spread.sheets.all.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var spread = new GC.Spread.Sheets.Workbook(document.getElementById("ss"), { sheetCount: 1 });
+            var sheet = spread.getSheet(0);
+
+            // 设置列宽和行高
+            sheet.setColumnWidth(0, 120);
+            sheet.setRowHeight(0, 30);
+
+            // 数据填充
+            sheet.setValue(0, 0, "姓名");
+            sheet.setValue(0, 1, "年龄");
+            sheet.setValue(1, 0, "张三");
+            sheet.setValue(2, 0, "李四");
+            sheet.setValue(3, 0, "王五");
+
+            // 数据验证 - 年龄列必须为数字且在18到60之间
+            var dv = sheet.getDataValidator(1, 1);
+            dv.rule = GC.Spread.Sheets.DataValidationRule.numeric;
+            dv.operator = GC.Spread.Sheets.DataValidationOperator.between;
+            dv.minimumValue = 18;
+            dv.maximumValue = 60;
+
+            // 公式计算 - 总计年龄
+            sheet.setValue(5, 0, "总计年龄");
+            sheet.setFormula(5, 1, "=SUM(B2:B4)");
+
+            // 格式化 - 总计年龄单元格
+            var cellStyle = sheet.getCell(5, 1).style;
+            cellStyle.fontWeight = "bold";
+            cellStyle.backgroundColor = "#eaeaea";
+            cellStyle.horizontalAlignment = GC.Spread.Sheets.HorizontalAlign.center;
+            cellStyle.verticalAlignment = GC.Spread.Sheets.VerticalAlign.middle;
+
+            // 自动调整列宽
+            sheet.autoFitColumn(0);
+            sheet.autoFitColumn(1);
+        });
+    </script>
+</body>
+</html>

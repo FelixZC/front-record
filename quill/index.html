@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quill Rich Text Editor Example</title>
+    <!-- 引入Quill样式 -->
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+</head>
+<body>
+
+    <div id="editor-container">
+        <p>Hello World!</p>
+        <!-- Quill编辑器将插入此处 -->
+    </div>
+
+    <!-- 引入Quill库 -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- 自定义JavaScript逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 自定义按钮及图片插入功能的配置
+            var customQuillOptions = {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        ['image'], // 添加图片插入按钮
+                        ['customInsertTimestamp'] // 自定义按钮
+                    ]
+                }
+            };
+
+            // 初始化Quill编辑器
+            var quill = new Quill('#editor-container', customQuillOptions);
+
+            // 注册自定义按钮
+            quill.getModule('toolbar').addHandler('customInsertTimestamp', function() {
+                var timestamp = new Date().toLocaleString();
+                quill.insertText(quill.getSelection().index, timestamp);
+            });
+
+            // 图片插入处理 - 基本示例，不涉及实际上传
+            quill.getModule('toolbar').addHandler('image', function() {
+                var range = quill.getSelection();
+                var fileInput = document.createElement('input');
+                fileInput.setAttribute('type', 'file');
+                fileInput.click();
+
+                fileInput.onchange = function() {
+                    var file = fileInput.files[0];
+                    if ('FileReader' in window) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            var img = document.createElement('img');
+                            img.src = e.target.result;
+                            // 这里仅展示了如何将图片base64数据插入到编辑器
+                            // 实际应用中，你可能需要上传图片到服务器并获取URL
+                            quill.insertEmbed(range.index, 'image', img.src);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('This browser does not support FileReader.');
+                    }
+                };
+            });
+        });
+    </script>
+
+</body>
+</html>

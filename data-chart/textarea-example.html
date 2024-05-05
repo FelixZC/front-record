@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TinyMCE富文本编辑器实例</title>
+<!-- 引入TinyMCE的CSS -->
+<link rel="stylesheet" href="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.css" referrerpolicy="origin">
+<!-- 注意：上面的链接需要替换为你的TinyMCE API密钥，或者直接下载CSS文件并本地引用 -->
+
+<!-- 引入TinyMCE的JS核心文件 -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- 同样，这里的链接也需要使用有效的API密钥，或者本地引用 -->
+<script>
+    tinymce.init({
+        selector: '#mytextarea', // 指定TinyMCE应用于哪个textarea元素
+        plugins: 'advlist autolink lists link image charmap print preview anchor',
+        toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        skin: 'oxide', // TinyMCE皮肤
+        content_css: 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/content.min.css', // 内容CSS
+    });
+</script>
+</head>
+<body>
+
+<h2>TinyMCE富文本编辑器实例</h2>
+<form method="post">
+    <textarea id="mytextarea" name="content"></textarea>
+    <!-- 提交按钮等其他表单元素 -->
+</form>
+
+</body>
+</html>
