@@ -29,12 +29,35 @@
             })
             await this.initializeAudioProcessing(this.localStream) // 初始化音频处理
             this.addVolumeControl() // 添加音量控制
+            this.addEventListeners()
             this.socket.onerror = this.handleError.bind(this); // 绑定错误处理函数
+            console.log('init end')
+        }
+
+        addEventListeners() {
             window.addEventListener('beforeunload', () => {
                 this.cleanup();
             });
-        }
 
+            document.getElementById("chatForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const message = document.getElementById("messageInput").value;
+                this.sendMessage(message);
+                document.getElementById("messageInput").value = "";
+            });
+
+            // 绑定视频控件按钮事件
+            document.querySelectorAll('.video-controls button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const video = event.target.closest('.self-video').querySelector('video');
+                    if (event.target.title === 'Mute') {
+                        this.toggleMute(video);
+                    } else if (event.target.title === 'Play/Pause') {
+                        this.togglePlayPause(video);
+                    }
+                });
+            });
+        }
         /**
          * 初始化音频处理，为每个音频轨道创建增益节点
          * @param {MediaStream} stream 包含音频轨道的媒体流
@@ -50,16 +73,6 @@
             });
         }
 
-        /**
-         * 提交消息表单的处理函数，发送消息并清空输入框
-         * @param {Event} e 提交事件
-         */
-        handleSubmit(e) {
-            e.preventDefault(); // 阻止默认表单提交行为
-            const message = document.getElementById("messageInput").value; // 获取消息内容
-            this.sendMessage(message); // 发送消息
-            document.getElementById("messageInput").value = ""; // 清空输入框
-        }
 
         /**
          * 定期检查WebSocket连接状态，并发送心跳
@@ -313,9 +326,10 @@
          * @param {Element} videoElement 视频HTML元素。
          */
         toggleMute(videoElement) {
+            console.log('toggleMute', videoElement)
             videoElement.muted = !videoElement.muted;
             // 更新静音按钮的样式
-            const muteButton = videoElement.previousSibling.querySelector('ion-volume-mute');
+            const muteButton = videoElement.nextElementSibling.querySelector('.ion-volume-up', '.ion-volume-mute');
             muteButton.className = videoElement.muted ? 'icon ion-volume-mute' : 'icon ion-volume-up';
         }
 
@@ -324,13 +338,14 @@
          * @param {Element} videoElement 视频HTML元素。
          */
         togglePlayPause(videoElement) {
+            console.log('togglePlayPause', videoElement)
             if (videoElement.paused || videoElement.ended) {
                 videoElement.play();
             } else {
                 videoElement.pause();
             }
             // 更新播放/暂停按钮的样式
-            const playPauseButton = videoElement.previousSibling.querySelector('ion-play, .ion-pause');
+            const playPauseButton = videoElement.nextElementSibling.querySelector('.ion-play, .ion-pause');
             playPauseButton.className = videoElement.paused ? 'icon ion-play' : 'icon ion-pause';
         }
 
@@ -382,15 +397,8 @@
             dc.onclose = () => {
                 console.log("Data channel closed");
             };
-            // 添加发送消息的方法
-            this.sendMessage = message => {
-                if (dc.readyState === 'open') {
-                    dc.send(message);
-                } else {
-                    console.error("Data channel is not ready to send.");
-                }
-            };
         }
+
         /**
          * 清理资源，移除监听器，关闭连接。
          */
@@ -433,6 +441,8 @@
         }
 
         /**
+         * 
+         * TODO
          * 设置视频质量。
          * @param {number} qualityLevel - 视频质量级别（分辨率宽度的 ideal 值）。
          */
@@ -470,14 +480,6 @@
 
             // 滚动到聊天消息列表底部
             document.getElementById('chatMessages').scrollTo(0, document.getElementById('chatMessages').scrollHeight);
-
-            // 添加消息提交事件处理，防止表单默认提交并执行发送消息逻辑
-            document.getElementById('chatForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const message = document.getElementById('messageInput').value; // 获取输入框中的消息内容
-                this.sendMessage(message); // 调用sendMessage方法发送消息
-                document.getElementById('messageInput').value = ''; // 清空输入框
-            });
         }
 
         /**
@@ -485,11 +487,13 @@
          * @param {string} message - 要发送的消息内容。
          */
         sendMessage(message) {
+            console.log('sendMessage', message)
             this.socket.send("message", { // 发送消息数据
                 from: this.peerId,
                 message: message
             });
         }
+
         /**
          * 尝试重新连接WebSocket。
          * 使用随机延迟以避免所有客户端同时重试。
@@ -505,6 +509,7 @@
         }
 
         /**
+         * TODO
          * 结束与指定对端的视频通话。
          * @param {string} peerId 对端的ID。
          */
@@ -516,7 +521,7 @@
                 const remoteVideo = document.getElementById(`peerVideo-${peerId}`); // 查找对端的视频元素
                 if (remoteVideo) {
                     remoteVideo.remove(); // 移除视频元素
-                    const controls = remoteVideo.previousSibling; // 移除视频控制条
+                    const controls = remoteVideo.nextElementSibling; // 移除视频控制条
                     if (controls) controls.remove();
                 }
             }

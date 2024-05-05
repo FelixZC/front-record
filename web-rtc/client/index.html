@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebRTC Video Chat</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.net/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="https://cdn.staticfile.net/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="./index.css"> <!-- 引入页面样式 -->
 </head>
 
@@ -16,9 +17,9 @@
     <main class="main-container">
         <section class="video-container">
             <div class="self-video">
-                <video id="myVideo" autoplay muted playsinline></video> <!-- 自己的视频画面 -->
+                <video id="myVideo" muted playsinline></video> <!-- 自己的视频画面 -->
                 <div class="video-controls" id="videoControls">
-                    <button class="video-control" title="Mute"><i class="icon ion-volume-mute"></i></button>
+                    <button class="video-control" title="Mute"><i class="icon ion-volume-up"></i></button>
                     <!-- 静音按钮 -->
                     <button class="video-control" title="Play/Pause"><i class="icon ion-play"></i></button>
                     <!-- 播放/暂停按钮 -->
@@ -32,14 +33,13 @@
         <!-- 聊天界面 -->
         <section id="chatSection">
             <ul id="chatMessages"></ul> <!-- 聊天消息列表 -->
-            <form id="chatForm">
-                <input type="text" id="messageInput" placeholder="Type your message..."> <!-- 输入框 -->
-                <button type="submit">Send</button> <!-- 发送按钮 -->
+            <form id="chatForm"></form>
+            <input type="text" id="messageInput" placeholder="Type your message..."> <!-- 输入框 -->
+            <button type="submit">Send</button> <!-- 发送按钮 -->
             </form>
         </section>
         <div id="status">正在初始化...</div> <!-- 状态提示 -->
     </main>
 </body>
-
 </html>
-<script src="./index.js"></script> <!-- 页面逻辑脚本 -->
+<script src="./index.js"></script>
