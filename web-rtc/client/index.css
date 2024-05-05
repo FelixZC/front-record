@@ -1,15 +1,18 @@
+/* 设置页面基本样式 */
 body,
 html {
     height: 100%;
     margin: 0;
 }
 
+/* 定义主容器样式，使用flex布局，占据整个页面高度 */
 .main-container {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
+/* 视频容器样式，使用flex布局进行视频排列，添加间距和底部边距 */
 .video-container {
     position: relative;
     width: 100%;
@@ -19,6 +22,7 @@ html {
     margin-bottom: 20px;
 }
 
+/* 自己的视频样式，设定尺寸和内嵌视频的填充方式 */
 .self-video {
     position: relative;
     width: 200px;
@@ -28,12 +32,14 @@ html {
     overflow: hidden;
 }
 
+/* 自己视频内嵌的视频样式，全屏显示 */
 .self-video video {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+/* 中心布局的样式，用于需要居中显示的元素 */
 .flex-center {
     display: flex;
     justify-content: center;
@@ -41,6 +47,7 @@ html {
     gap: 10px;
 }
 
+/* 视频控制条样式，绝对定位在视频底部 */
 .video-controls {
     display: flex;
     justify-content: center;
@@ -51,6 +58,7 @@ html {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+/* 视频控制按钮样式 */
 .video-control {
     background: none;
     border: none;
@@ -60,23 +68,25 @@ html {
     margin: 0 5px;
 }
 
-
+/* 用户名标签样式，定位在视频右上角 */
 .username-tag {
     position: absolute;
-    bottom: 0;
-    left: 10px;
+    top: 0;
+    right: 10px;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 2px 5px;
     font-size: 0.8em;
 }
 
+/* 聊天消息列表样式 */
 #chatMessages {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
+/* 单条聊天消息样式 */
 #chatMessages li {
     padding: 5px;
     margin-bottom: 5px;
@@ -84,6 +94,7 @@ html {
     border-radius: 5px;
 }
 
+/* 输入消息框样式 */
 #messageInput {
     flex: 1;
     padding: 5px;
@@ -92,6 +103,7 @@ html {
     border-radius: 3px;
 }
 
+/* 发送消息按钮样式 */
 #sendMessage {
     padding: 5px 10px;
     background-color: #007bff;
@@ -101,12 +113,14 @@ html {
     cursor: pointer;
 }
 
+/* 聊天区域样式，设置滚动条 */
 #chatSection {
     height: 300px;
     overflow-y: auto;
     margin-top: 20px;
 }
 
+/* 发送消息表单的按钮样式 */
 #chatForm button {
     padding: 5px 10px;
     background-color: #007bff;

@@ -84,7 +84,7 @@ startCallButton.addEventListener('click', startCall);
 endCallButton.addEventListener('click', endCall);
 
 // 仅为示例，实际应用需替换为信令服务的逻辑
-window.handleAnswer = handleAnswer; // 全局函数，用于处理从信令服务器接收到的answer
+window.handleAnswer = handleAnswer;
 
 // 初始化
 getUserMedia();

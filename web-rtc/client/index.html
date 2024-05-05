@@ -5,38 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebRTC Video Chat</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./ionic-icon.css"> <!-- 引入ionic图标样式 -->
+    <link rel="stylesheet" href="./index.css"> <!-- 引入页面样式 -->
 </head>
 
 <body>
     <header>
-        <h1>WebRTC Video Chat</h1>
+        <h1>WebRTC Video Chat</h1> <!-- 页面标题 -->
     </header>
     <main class="main-container">
         <section class="video-container">
             <div class="self-video">
-                <video id="myVideo" autoplay muted playsinline></video>
+                <video id="myVideo" autoplay muted playsinline></video> <!-- 自己的视频画面 -->
                 <div class="video-controls" id="videoControls">
-                    <button class="video-control" title="Mute"><i class="fas fa-volume-mute"></i></button>
-                    <button class="video-control" title="Play/Pause"><i class="fas fa-play"></i></button>
+                    <button class="video-control" title="Mute"><i class="icon ion-volume-mute"></i></button>
+                    <!-- 静音按钮 -->
+                    <button class="video-control" title="Play/Pause"><i class="icon ion-play"></i></button>
+                    <!-- 播放/暂停按钮 -->
                 </div>
-                <p class="username-tag">You</p>
+                <p class="username-tag">You</p> <!-- 用户名标签 -->
             </div>
             <div id="peerVideos" class="flex-center">
-                <!-- Peer videos will be appended here -->
+                <!-- Peer videos will be appended here --> <!-- 这里将附加对端视频 -->
             </div>
         </section>
         <!-- 聊天界面 -->
         <section id="chatSection">
-            <ul id="chatMessages"></ul>
+            <ul id="chatMessages"></ul> <!-- 聊天消息列表 -->
             <form id="chatForm">
-                <input type="text" id="messageInput" placeholder="Type your message...">
-                <button type="submit">Send</button>
+                <input type="text" id="messageInput" placeholder="Type your message..."> <!-- 输入框 -->
+                <button type="submit">Send</button> <!-- 发送按钮 -->
             </form>
         </section>
-        <div id="status">正在初始化...</div>
+        <div id="status">正在初始化...</div> <!-- 状态提示 -->
     </main>
 </body>
+
 </html>
-<script src="./index.js"></script>
+<script src="./index.js"></script> <!-- 页面逻辑脚本 -->
