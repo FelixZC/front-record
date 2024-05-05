@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Video Chat</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <header>
+        <h1>WebRTC Video Chat</h1>
+    </header>
+    <main class="main-container">
+        <section class="video-container">
+            <div class="self-video">
+                <video id="myVideo" autoplay muted playsinline></video>
+                <div class="video-controls" id="videoControls">
+                    <button class="video-control" title="Mute"><i class="fas fa-volume-mute"></i></button>
+                    <button class="video-control" title="Play/Pause"><i class="fas fa-play"></i></button>
+                </div>
+                <p class="username-tag">You</p>
+            </div>
+            <div id="peerVideos" class="flex-center">
+                <!-- Peer videos will be appended here -->
+            </div>
+        </section>
+        <!-- 聊天界面 -->
+        <section id="chatSection">
+            <ul id="chatMessages"></ul>
+            <form id="chatForm">
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button type="submit">Send</button>
+            </form>
+        </section>
+        <div id="status">正在初始化...</div>
+    </main>
+</body>
+</html>
+<script src="./index.js"></script>

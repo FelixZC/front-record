@@ -1,0 +1,117 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.self-video {
+    position: relative;
+    width: 200px;
+    /* 示例宽度 */
+    height: 150px;
+    /* 示例高度 */
+    overflow: hidden;
+}
+
+.self-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.video-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video-control {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+
+.username-tag {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    font-size: 0.8em;
+}
+
+#chatMessages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#chatMessages li {
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#sendMessage {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#chatSection {
+    height: 300px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+#chatForm button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}

@@ -1,10 +1,15 @@
-// 引入可能需要的额外模块，如uuid生成唯一peerId
+const WebSocket = require('ws');
+
+const server = new WebSocket.Server({
+    port: 8080
+});
+
 const uuid = require('uuid');
 
 // 存储在线房间和用户
 const rooms = {};
 
-wss.on('connection', (ws) => {
+server.on('connection', (ws) => {
     ws.isAlive = true; // 初始化心跳状态
     const peerId = uuid.v4();
     ws.on('pong', () => {
@@ -16,7 +21,10 @@ wss.on('connection', (ws) => {
             data = JSON.parse(message);
         } catch (error) {
             console.error('Received invalid JSON:', message);
-            ws.send(JSON.stringify({ type: 'error', message: 'Invalid message format.' }));
+            ws.send(JSON.stringify({
+                type: 'error',
+                message: 'Invalid message format.'
+            }));
             return;
         }
 
@@ -58,14 +66,3 @@ wss.on('connection', (ws) => {
         }
     });
 });
-
-// 为转发消息添加安全验证，确保消息来源合法
-function broadcastMessage(roomId, data, senderPeerId) {
-    if (rooms[roomId]) {
-        rooms[roomId].forEach(client => {
-            if (client.peerId !== senderPeerId && client.ws.readyState === WebSocket.OPEN) {
-                client.ws.send(JSON.stringify(data));
-            }
-        });
-    }
-}
