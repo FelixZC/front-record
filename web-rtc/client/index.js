@@ -315,7 +315,7 @@
         toggleMute(videoElement) {
             videoElement.muted = !videoElement.muted;
             // 更新静音按钮的样式
-            const muteButton = videoElement.previousSibling.querySelector('.fa-volume-mute');
+            const muteButton = videoElement.previousSibling.querySelector('ion-volume-mute');
             muteButton.className = videoElement.muted ? 'icon ion-volume-mute' : 'icon ion-volume-up';
         }
 
