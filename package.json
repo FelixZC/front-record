@@ -2,14 +2,18 @@
   "name": "front-record",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "dev": "vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "pzc",
   "license": "ISC",
   "dependencies": {
+    "rxjs": "^7.8.1",
     "uuid": "^9.0.1",
     "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "vite": "^5.2.8"
   }
 }
