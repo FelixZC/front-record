@@ -1,22 +1,48 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 
 <head>
-    <meta charset=UTF-8 />
-    <meta http-equiv=X-UA-Compatible content=IE=edge />
-    <meta name=viewport content=width=device-width, initial-scale=1.0 />
-    <title>WebXR Game</title>
-    <script src=https://aframe.io/releases/1.3.0/aframe.min.js></script>
-    <script src=https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebXR Game Enhanced</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+
 </head>
 
 <body>
+    <a-scene environment="preset: forest">
+        <a-light type="directional" intensity="0.7" position="-1 1 1"></a-light>
+        <a-sky src="https://aframe.io/aframe/examples/boilerplate/panorama/puydesancy.jpg"></a-sky>
 
-    <a-scene environment=preset: forest;>
-        <a-box scale=30 20 4 position=0 0 -20 src=https://image-1300099782.cos.ap-beijing.myqcloud.com/wall.jpeg>
-            <a-box position=0 0 0></a-box>
+        <a-entity id="cameraRig" movement-controls="fly: true; speed: 1">
+            <a-camera></a-camera>
+            <a-entity hand-controls="hand: left"></a-entity>
+            <a-entity hand-controls="hand: right"></a-entity>
+        </a-entity>
+
+        <a-box scale="30 20 4" position="0 0 -20" src="https://image-1300099782.cos.ap-beijing.myqcloud.com/wall.jpeg">
         </a-box>
+
+        <a-box position="1 0.5 -3" material="color: red">
+            <a-animation attribute="position" to="1 1 -3" direction="alternate" dur="1000"
+                repeat="indefinite"></a-animation>
+        </a-box>
+
+        <a-box position="-1 0.5 -3" material="color: blue" click-action></a-box>
     </a-scene>
 </body>
 
 </html>
+<script>
+    AFRAME.registerComponent('click-action', {
+        init: function () {
+            var el = this.el;
+            el.addEventListener('click', function (evt) {
+                alert('你点击了我！');
+            });
+        }
+    });
+</script>
