@@ -1,5 +1,6 @@
 #iChannel0"../../images/ie-tomb.jpg"
-// #include "../commom/perlin-noise.glsl"
+// #include "../commom/glsl-noise/simplex/3d.glsl"
+
 highp float random(vec2 co)
 {
     highp float a=12.9898;
