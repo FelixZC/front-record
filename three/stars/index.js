@@ -1,8 +1,8 @@
 
  import * as THREE from "three";
  import * as kokomi from "kokomi.js";
- import vertexShader from "./shaders/index/vertexShader.glsl";
- import fragmentShader from "./shaders/index/fragmentShader.glsl";
+ import vertexShader from "../shaders/stars/vertexShader.glsl";
+ import fragmentShader from "../shaders/stars/fragmentShader.glsl";
  
 /**
  * Sketch类继承自kokomi.Base，用于创建和管理一个Three.js的场景。

@@ -1,5 +1,5 @@
 // iChannel0引用了外部的图片资源，作为纹理使用
-#iChannel0"../../images/b1533de93c0ac43e2139bd93ec47419c_5547524982557108866.png"
+#iChannel0"../../images/texture/b1533de93c0ac43e2139bd93ec47419c_5547524982557108866.png"
 
 /**
  * 对给定的二维向量应用一个凸起效果。
