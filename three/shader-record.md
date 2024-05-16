@@ -1,5 +1,7 @@
-### chatper1
+### introduce
+a course from https://juejin.cn/book/7267462574734573604
 
+### chatper1
 在这段学习旅程的概述中，我们重点掌握了以下几个关键知识点：
 
 1. **技术平台与语言选择**：我们聚焦于WebGL平台，这是一种允许在网页浏览器中进行硬件加速3D图形渲染的技术。在此基础上，我们学习了GLSL（OpenGL Shading Language），这是用于编写WebGL着色器的专用编程语言。
