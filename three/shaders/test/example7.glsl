@@ -1,7 +1,7 @@
 
 // 定义全局纹理通道
-#iChannel0"../../images/trailblazer-female.png"
-#iChannel1"../../images/trailblazer-male.png"
+#iChannel0"../../images/rail-star/trailblazer-female.png"
+#iChannel1"../../images/rail-star/trailblazer-male.png"
 
 //
 // GLSL textureless classic 3D noise "cnoise",

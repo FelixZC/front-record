@@ -1,5 +1,5 @@
-#iChannel0"../../images/1626178455372.jpg"
-#iChannel1"../../images/1626273086948.jpg"
+#iChannel0"../../images/wallpaper/1626178455372.jpg"
+#iChannel1"../../images/wallpaper/1626273086948.jpg"
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex
 //               noise functions.

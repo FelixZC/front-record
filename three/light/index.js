@@ -11,12 +11,12 @@ class Sketch extends kokomi.Base {
         // const geometry = new THREE.PlaneGeometry(4, 4);
         const geometry = new THREE.TorusKnotGeometry(1.2, 0.4, 128, 32);
         const envmap = new THREE.CubeTextureLoader().load([
-            "../images/texture/254a41dc4cbc8b5e0afaacf2eeb38890_8919910114589865353.png",
-            "../images/texture/912bad8c0723b85a6a53f9b19323d3cd_7157411529622049660.png",
-            "../images/texture/951b5cf2295ea158a29c80911e3eb55d_6539106821760568826.png",
-            "../images/texture/69806d86868878c33ca22aa6dcc2571a_2237174096575525551.png",
-            "../images/texture/b07fac008e99cae7387af773f4d4c039_1530443783740284969.png",
-            "../images/texture/efaa1ab4d1d567a478bdabda76121719_1637318133581363152.png",
+            "../images/rail-star/254a41dc4cbc8b5e0afaacf2eeb38890_8919910114589865353.png",
+            "../images/rail-star/912bad8c0723b85a6a53f9b19323d3cd_7157411529622049660.png",
+            "../images/rail-star/951b5cf2295ea158a29c80911e3eb55d_6539106821760568826.png",
+            "../images/rail-star/69806d86868878c33ca22aa6dcc2571a_2237174096575525551.png",
+            "../images/rail-star/b07fac008e99cae7387af773f4d4c039_1530443783740284969.png",
+            "../images/rail-star/efaa1ab4d1d567a478bdabda76121719_1637318133581363152.png",
         ]);
 
         const material = new THREE.ShaderMaterial({

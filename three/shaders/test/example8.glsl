@@ -1,4 +1,4 @@
-#iChannel0"../../images/ie-tomb.jpg"
+#iChannel0"../../images/texture/ie-tomb.jpg"
 
 /**
  * 函数：random

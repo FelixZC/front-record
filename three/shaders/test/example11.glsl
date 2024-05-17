@@ -1,4 +1,4 @@
-#iChannel0"../../images/1626438085277.jpg"
+#iChannel0"../../images/wallpaper/1626438085277.jpg"
 
 // 生成一个基于二维坐标co的随机数
 // 返回值：随机浮点数

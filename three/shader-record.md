@@ -1,5 +1,5 @@
 ### introduce
-a course from https://juejin.cn/book/7267462574734573604
+a shader course from https://juejin.cn/book/7267462574734573604
 
 ### chatper1
 在这段学习旅程的概述中，我们重点掌握了以下几个关键知识点：

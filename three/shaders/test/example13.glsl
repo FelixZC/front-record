@@ -1,4 +1,4 @@
-#iChannel0"../../images/texture/b1533de93c0ac43e2139bd93ec47419c_5547524982557108866.png"
+#iChannel0"../../images/rail-star/b1533de93c0ac43e2139bd93ec47419c_5547524982557108866.png"
 
 // 定义主图像渲染函数
 // fragColor: 输出的像素颜色，是一个vec4类型

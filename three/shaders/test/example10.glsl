@@ -1,4 +1,4 @@
-#iChannel0"../../images/1626350753637.jpg"
+#iChannel0"../../images/wallpaper/1626350753637.jpg"
 
 /**
  * 主图像函数。
