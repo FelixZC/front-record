@@ -37,7 +37,7 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50vw;
+  width: 40vw;
   height: 60vh;
   opacity: 0;
   transition: opacity 0.5s ease-out; /* 添加过渡效果以改善用户体验 */

@@ -6,7 +6,7 @@ import * as kokomi from "kokomi.js";
 
 import World from "./world";
 
-import Debug from "./debug";
+import Debug from "../debug";
 
 import resources from "./resources";
 
