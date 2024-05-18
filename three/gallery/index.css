@@ -1,9 +1,13 @@
 /* 页面基本样式 */
-#app {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+html, body {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  line-height: 1.6;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,21 +16,20 @@
   color: #343a40;
 }
 
-#sketch {
+#sketch, .gallery {
   position: fixed;
   z-index: 2;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+#sketch {
   background: black;
 }
 
 .gallery {
-  position: relative;
   z-index: 1;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
 }
 
 .gallery .gallery-item {
@@ -37,4 +40,44 @@
   width: 50vw;
   height: 60vh;
   opacity: 0;
+  transition: opacity 0.5s ease-out; /* 添加过渡效果以改善用户体验 */
+}
+
+.hollow {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-screen {
+  position: fixed;
+  z-index: 10; /* 调整层级确保加载屏覆盖其他内容 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: background 0.3s; /* 仅对背景色进行过渡效果 */
+  background: black;
+}
+
+.loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading {
+  color: white;
+  font-size: 1.875rem;
+  letter-spacing: 0.1em;
+}
+
+.loading span {
+  animation: blur 1.5s calc(var(--i) / 5 * 1s) alternate infinite;
+}
+
+@keyframes blur {
+  to {
+      filter: blur(2px);
+  }
 }
