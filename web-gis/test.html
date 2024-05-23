@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cesium Drawing Tools</title>
+    <link rel="stylesheet" href="./test.css">
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="infoDiv" class="info-div"></div>
+    <!-- 下拉菜单用于切换绘图工具 -->
+    <div class="toolbar">
+        <select title="选择绘图工具" id="toolSelect">
+            <option value="default">无</option>
+            <option value="mouse">点击</option>
+            <option value="circle">画圆</option>
+            <option value="lines">画线</option>
+            <option value="points">画点</option>
+            <option value="polygons">画多边形</option>
+        </select>
+    </div>
+</body>
+
+</html>
+<script type="module" src="./test.js"></script>

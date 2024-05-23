@@ -119,16 +119,16 @@ setTimeout(() => {
   });
   /************************************************************************* */
 
-  // 假设布达拉宫的经纬度坐标
-  const potalaPalaceLongitude = 91.1400; // 经度
-  const potalaPalaceLatitude = 29.6500; // 纬度
+  // 假设不知道哪的经纬度坐标
+  const whoKonwWhereLongitude = 101.1400; // 经度
+  const whoKonwWhereLatitude = 29.6500; // 纬度
 
   // 定义圆柱体的中心位置，假设高度为0
-  const position3 = Cesium.Cartesian3.fromDegrees(potalaPalaceLongitude, potalaPalaceLatitude, 0);
+  const position3 = Cesium.Cartesian3.fromDegrees(whoKonwWhereLongitude, whoKonwWhereLatitude, 0);
 
-  // 调用 addCylinder 方法在布达拉宫添加一个圆柱体
+  // 调用 addCylinder 方法在不知道哪添加一个圆柱体
   cesiumUtils.addCylinder(position3, {
-    length: 100000, // 设置圆柱体的长度为1000米
+    length: 1000000, // 设置圆柱体的长度为1000米
     topRadius: 50000, // 设置顶部半径为500米
     bottomRadius: 50000, // 设置底部半径为500米
     material: Cesium.Color.BLUE // 设置圆柱体的材质为蓝色
@@ -136,10 +136,4 @@ setTimeout(() => {
   /************************************************************************* */
   // cesiumUtils.showYellowRiver()
   /************************************************************************* */
-  /************************************************************************* */
-  /************************************************************************* */
-  /************************************************************************* */
-  /************************************************************************* */
-  /************************************************************************* */
-  // cesiumUtils.flyToLocation(Cesium.Cartesian3.fromDegrees(114.0, 26.5, 500))
 }, 2000);

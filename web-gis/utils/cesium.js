@@ -39,10 +39,8 @@ class CesiumUtils {
 
     this.setupCamera();
     this.setViewConfig()
-    this.setInfoWindow()
     // 定位到中国区域
     this.flyToLocation(Cesium.Rectangle.fromDegrees(73, 3, 136, 54))
-    this.setupEventHandlers();
   }
   /**
    * 添加地形提供者到viewer。
@@ -141,6 +139,7 @@ class CesiumUtils {
    * @param {Object} options - 自定义圆柱体属性的选项对象，包括长度、上底半径、下底半径和材质。
    * @returns 无返回值。
    */
+
   addCylinder(position, options = {}) {
     // 创建一个圆柱体实体并设置其位置和图形属性
     const cylinderEntity = new Cesium.Entity({
@@ -186,20 +185,6 @@ class CesiumUtils {
     this.viewer.scene.fog.minimumBrightness = options.minimumBrightness || 0.5;
   }
 
-  setInfoWindow() {
-    // 创建div并添加到页面中
-    this.infoDiv = document.createElement('div');
-    this.infoDiv.style.position = 'absolute';
-    this.infoDiv.style.display = 'none';
-    this.infoDiv.style.padding = '8px';
-    this.infoDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    this.infoDiv.style.color = 'white';
-    this.infoDiv.style.borderRadius = '4px';
-    this.infoDiv.style.fontFamily = 'Arial, sans-serif';
-    this.infoDiv.style.fontSize = '14px';
-    document.body.appendChild(this.infoDiv); // 添加到body中，或根据需要添加到特定容器
-  }
-
   /**
    * 设置相机初始视图。
    */
@@ -207,62 +192,6 @@ class CesiumUtils {
     this.viewer.camera.setView({
       destination: this.cameraPosition,
     });
-  }
-
-  /**
-   * 处理屏幕点击事件。
-   * @param {object} click 鼠标移动事件对象。
-   */
-
-  setupEventHandlers() {
-    this.handleClick = this.handleClick.bind(this);
-    this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-    this.handler.setInputAction(this.handleClick, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-  }
-
-  handleClick(click) {
-    // 重置监听器和信息显示
-    if (this.listener) {
-      this.listener();
-      this.listener = null;
-      this.visiable = false;
-      this.infoDiv.style.display = 'none'; // 隐藏div
-    }
-
-    // 根据地形提供者类型，选择不同的位置拾取逻辑
-    let earthPosition;
-    if (this.viewer.terrainProvider instanceof Cesium.EllipsoidTerrainProvider) {
-      earthPosition = this.viewer.scene.camera.pickEllipsoid(click.position);
-    } else {
-      const ray = this.viewer.camera.getPickRay(click.position);
-      earthPosition = this.viewer.scene.globe.pick(ray, this.viewer.scene);
-    }
-
-    // 如果成功拾取位置，则计算和显示地理坐标和高度信息
-    if (earthPosition) {
-      const position = this.viewer.scene.globe.ellipsoid.cartesianToCartographic(earthPosition);
-      const lon = Cesium.Math.toDegrees(position.longitude).toFixed(6);
-      const lat = Cesium.Math.toDegrees(position.latitude).toFixed(6);
-      const height = position.height.toFixed(2);
-
-      // 更新信息div的内容
-      this.infoDiv.innerHTML = `Longitude: ${lon}, Latitude: ${lat}, Height: ${height} meters`;
-      this.visiable = true;
-      this.infoDiv.style.display = 'block'; // 显示div
-
-      // 添加场景渲染完成后的监听，以更新位置信息的显示
-      this.listener = this.viewer.scene.postRender.addEventListener(() => {
-        const windowPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
-          this.viewer.scene,
-          earthPosition
-        );
-        if (windowPosition) {
-          // 更新div的位置
-          this.infoDiv.style.top = `${windowPosition.y}px`;
-          this.infoDiv.style.left = `${windowPosition.x}px`;
-        }
-      });
-    }
   }
 
   flyToLocation(destination) {
@@ -377,7 +306,6 @@ class CesiumUtils {
     this.addEntity(labelEntity);
   }
 
-
   /**
    * 添加一个带有Billboard的Entity到场景中。
    * @param {Cesium.Cartesian3} position 标签在场景中的全球坐标位置。
@@ -402,7 +330,6 @@ class CesiumUtils {
 
     // 将Billboard实体添加到场景中
     this.addEntity(billboardEntity);
-
   }
 
   /**
