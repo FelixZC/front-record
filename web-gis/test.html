@@ -14,13 +14,16 @@
     <div class="toolbar">
         <select title="选择绘图工具" id="toolSelect">
             <option value="default">无</option>
-            <option value="mouse">点击</option>
+            <option value="mouse">显示经纬度</option>
+            <option value="highlight">高亮</option>
+            <option value="customColor">自定义颜色</option>
             <option value="circle">画圆</option>
             <option value="lines">画线</option>
             <option value="points">画点</option>
             <option value="polygons">画多边形</option>
         </select>
     </div>
+    <div id="colorPickerContainer" style="display: none; position: absolute; z-index: 1000;"></div>
 </body>
 
 </html>
