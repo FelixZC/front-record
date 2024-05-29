@@ -25,16 +25,38 @@ class CesiumUtils {
       const terrainProvider = await Cesium.createWorldTerrainAsync();
       this.viewer = new Cesium.Viewer(this.containerId, {
         terrainProvider: terrainProvider,
-        animation: false, //是否显示动画控件
-        baseLayerPicker: true, //是否显示图层选择控件
-        fullscreenButton: true, //是否显示全屏按钮
+        animation: false, // 是否显示动画控件
+        baseLayerPicker: false, // 是否显示图层选择控件
+        fullscreenButton: false, // 是否显示全屏按钮
         vrButton: true, // vr部件
         geocoder: true, // 位置搜索部件
-        homeButton: true, //是否显示Home按钮
-        infoBox: true, //是否显示点击要素之后显示的信息
+        homeButton: true, // 是否显示Home按钮
+        infoBox: false, // 是否显示点击要素之后显示的信息
         sceneModePicker: true, // 二三维切换部件
-        timeline: false, //是否显示时间线控件
-        navigationHelpButton: true, //是否显示帮助信息控件
+        timeline: false, // 是否显示时间线控件
+        navigationHelpButton: true, // 是否显示帮助信息控件
+        useDefaultRenderLoop: true, // 是否使用默认的渲染循环，false表示不使用
+        selectionIndicator: false, // 是否显示选择指标，false表示不显示
+        navigationInstructionsInitiallyVisible: false, // 是否初始时显示导航指示，false表示不显示
+        allowTextureFilterAnisotropic: false, // 是否允许各向异性纹理过滤，false表示不允许
+        contextOptions: {
+          webgl: {
+            alpha: false, // 是否启用透明度
+            antialias: true, // 是否启用抗锯齿
+            preserveDrawingBuffer: true, // 是否保留绘制缓冲区
+            failIfMajorPerformanceCaveat: false, // 如果存在重大性能问题，是否失败
+            depth: true, // 是否启用深度测试
+            stencil: false, // 是否启用模板测试
+          },
+        },
+        targetFrameRate: 60, // 目标帧率，设置为60
+        resolutionScale: 0.1, // 分辨率缩放比例，设置为0.1
+        orderIndependentTranslucency: true, // 是否启用透明度独立于排序，true表示启用
+        imageryProvider: undefined, // 地图影像提供者，未定义
+        automaticallyTrackDataSourceClocks: false, // 是否自动跟踪数据源时钟，false表示不跟踪
+        dataSources: null, // 数据源，设置为null
+        clock: null, // 时钟，设置为null
+        terrainShadows: Cesium.ShadowMode.DISABLED, // 地形阴影模式，设置为DISABLED表示禁用
       });
 
       this.setupCamera();

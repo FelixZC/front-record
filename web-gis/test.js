@@ -224,4 +224,21 @@ cesiumUtils.initViewer().then(async () => {
         })
     )
     /************************************************************************************************************************************************** */
+    // 加载高程数据提供者
+    // const geoidService = await Cesium.ArcGISTiledElevationTerrainProvider.fromUrl("https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/EGM2008/ImageServer");
+    // // 配置i3S数据提供者选项，并加载i3S数据
+    // const i3sOptions = {
+    //     traceFetches: false, // 关闭i3S数据抓取追踪
+    //     geoidTiledTerrainProvider: geoidService, // 应用geoid高程服务
+    // };
+    // const i3sProvider = await Cesium.I3SDataProvider.fromUrl("https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_3DObjects_1_7/SceneServer/layers/0", i3sOptions)
+    // viewer.scene.primitives.add(i3sProvider);
+
+    // // 设置视图中心位置到i3S数据的中心，并提升高度，以便更好地查看
+    // const center = Cesium.Rectangle.center(i3sProvider.extent);
+    // center.height = 10000.0;
+    // const destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(center);
+    // cesiumUtils.flyToLocation(destination)
+    /************************************************************************************************************************************************** */
+
 })
