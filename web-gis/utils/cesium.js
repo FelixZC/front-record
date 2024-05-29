@@ -15,32 +15,34 @@ class CesiumUtils {
     this.infoDiv = null; // 用于显示信息的div
     this.listener = null; // 用于存储事件监听器
     this.visiable = false; // 控制信息显示的变量
-    this.initViewer()
   }
 
   /**
    * 初始化Cesium视图。
    */
-  async initViewer() {
-    const terrainProvider = await Cesium.createWorldTerrainAsync();
-    this.viewer = new Cesium.Viewer(this.containerId, {
-      terrainProvider: terrainProvider,
-      animation: false, //是否显示动画控件
-      baseLayerPicker: true, //是否显示图层选择控件
-      fullscreenButton: true, //是否显示全屏按钮
-      vrButton: true, // vr部件
-      geocoder: true, // 位置搜索部件
-      homeButton: true, //是否显示Home按钮
-      infoBox: true, //是否显示点击要素之后显示的信息
-      sceneModePicker: true, // 二三维切换部件
-      timeline: false, //是否显示时间线控件
-      navigationHelpButton: true, //是否显示帮助信息控件
-    });
+  initViewer() {
+    return new Promise(async (resolve) => {
+      const terrainProvider = await Cesium.createWorldTerrainAsync();
+      this.viewer = new Cesium.Viewer(this.containerId, {
+        terrainProvider: terrainProvider,
+        animation: false, //是否显示动画控件
+        baseLayerPicker: true, //是否显示图层选择控件
+        fullscreenButton: true, //是否显示全屏按钮
+        vrButton: true, // vr部件
+        geocoder: true, // 位置搜索部件
+        homeButton: true, //是否显示Home按钮
+        infoBox: true, //是否显示点击要素之后显示的信息
+        sceneModePicker: true, // 二三维切换部件
+        timeline: false, //是否显示时间线控件
+        navigationHelpButton: true, //是否显示帮助信息控件
+      });
 
-    this.setupCamera();
-    this.setViewConfig()
-    // 定位到中国区域
-    this.flyToLocation(Cesium.Rectangle.fromDegrees(73, 3, 136, 54))
+      this.setupCamera();
+      this.setViewConfig()
+      // 定位到中国区域
+      this.flyToLocation(Cesium.Rectangle.fromDegrees(73, 3, 136, 54))
+      resolve();
+    });
   }
   /**
    * 添加地形提供者到viewer。

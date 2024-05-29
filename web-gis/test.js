@@ -14,8 +14,7 @@ import {
 const cesiumUtils = new CesiumUtils({
     containerId: 'cesiumContainer'
 });
-
-setTimeout(async() => {
+cesiumUtils.initViewer().then(async () => {
     const viewer = cesiumUtils.viewer
     // 初始化所有绘图工具
     const drawTools = {
@@ -48,10 +47,6 @@ setTimeout(async() => {
         }
     }
 
-    // viewer.camera.setView({
-    //     destination: Cesium.Cartesian3.fromDegrees(86.57, 27.7, 15000),
-    // });
-
     await Cesium.Cesium3DTileset.fromUrl('./assets/cesium-3d-tiles/tilesets/tileset/tileset.json').then(function (tileset) {
         viewer.scene.primitives.add(tileset)
         tileset.style = new Cesium.Cesium3DTileStyle({
@@ -69,4 +64,4 @@ setTimeout(async() => {
         });
         viewer.flyTo(tileset)
     })
-}, 2000);
+})

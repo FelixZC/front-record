@@ -5,8 +5,7 @@ import * as Cesium from 'cesium';
 const cesiumUtils = new CesiumUtils({
   containerId: 'cesiumContainer'
 });
-
-setTimeout(() => {
+cesiumUtils.initViewer().then(() => {
   const position = Cesium.Cartesian3.fromDegrees(86.57, 27.7, 15000); // 指定一个位置
   const text = '珠穆朗玛峰'; // 标签文本
   // 添加标签到Cesium场景
@@ -136,4 +135,4 @@ setTimeout(() => {
   /************************************************************************* */
   // cesiumUtils.showYellowRiver()
   /************************************************************************* */
-}, 2000);
+})
