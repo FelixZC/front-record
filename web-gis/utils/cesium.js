@@ -20,7 +20,7 @@ class CesiumUtils {
   /**
    * 初始化Cesium视图。
    */
-  initViewer() {
+  initViewer(initOptions = {}) {
     return new Promise(async (resolve) => {
       const terrainProvider = await Cesium.createWorldTerrainAsync();
       this.viewer = new Cesium.Viewer(this.containerId, {
@@ -57,6 +57,7 @@ class CesiumUtils {
         dataSources: null, // 数据源，设置为null
         clock: null, // 时钟，设置为null
         terrainShadows: Cesium.ShadowMode.DISABLED, // 地形阴影模式，设置为DISABLED表示禁用
+        ...initOptions,
       });
 
       this.setupCamera();
@@ -218,11 +219,19 @@ class CesiumUtils {
     });
   }
 
-  flyToLocation(destination) {
-    // 移动相机到指定位置
+  /**
+   * 移动相机到指定的位置。
+   * @param {Object} destination 目标位置的对象。该对象通常包含经纬度（或其它坐标系统）等信息，具体取决于 viewer 的实现。
+   * @param {Object} options 可选参数对象，用于自定义相机飞行动画的行为。
+   *        可以包含如飞行速度、过渡时间、视野角度等动画效果控制选项。
+   * @returns 无返回值。
+   */
+  flyToLocation(destination, options = {}) {
+    // 将提供的 destination 和 options 合并，然后执行相机的飞行动画
     this.viewer.camera.flyTo({
       destination: destination,
-      // 其他相机飞行动画参数
+      ...options
+      // 这里可以添加其它自定义的相机飞行动画参数
     });
   }
 
