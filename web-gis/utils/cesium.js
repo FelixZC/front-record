@@ -157,13 +157,13 @@ class CesiumUtils {
     // 使用 Cesium Viewer 实例添加实体
     this.addEntity(corridorEntity);
   }
+
   /**
    * 在当前视图中添加一个圆柱体。
    * @param {Cesium.Cartesian3} position - 圆柱体的地理位置。
    * @param {Object} options - 自定义圆柱体属性的选项对象，包括长度、上底半径、下底半径和材质。
    * @returns 无返回值。
    */
-
   addCylinder(position, options = {}) {
     // 创建一个圆柱体实体并设置其位置和图形属性
     const cylinderEntity = new Cesium.Entity({
@@ -386,50 +386,126 @@ class CesiumUtils {
     }
   }
 
-  showYellowRiver() {
-    // 假设黄河的经纬度范围
-    const yellowRiverRectangle = Cesium.Rectangle.fromDegrees(
-      103.5, 35.0, // 西经和南纬（黄河源头附近的坐标）
-      111.0, 40.0 // 东经和北纬（黄河接近入海口的坐标）
+  /**
+   * 显示指定河流的方法
+   * @param {number} westLongitude 西经，指定河流的西部边界
+   * @param {number} southLatitude 南纬，指定河流的南部边界
+   * @param {number} eastLongitude 东经，指定河流的东部边界
+   * @param {number} northLatitude 北纬，指定河流的北部边界
+   * @param {Array} riverColor 河流颜色，一个包含RGB值的数组 [R, G, B]
+   * @param {number} [height=0] 河流的高度，默认为0
+   * @returns {Cesium.Cartesian3} 返回俯瞰中心位置的坐标
+   */
+  showRiver(westLongitude, southLatitude, eastLongitude, northLatitude, riverColor, height = 0) {
+    // 创建河流的矩形边界
+    const riverRectangle = Cesium.Rectangle.fromDegrees(
+      westLongitude, southLatitude,
+      eastLongitude, northLatitude
     );
 
-    // 创建一个表示黄河的 RectangleGeometry
-    const yellowRiverGeometry = new Cesium.RectangleGeometry({
-      rectangle: yellowRiverRectangle,
-      height: 1000, // 假设的高度值，黄河的河床高度可以根据实际情况调整
+    // 根据河流边界创建 RectangleGeometry
+    const riverGeometry = new Cesium.RectangleGeometry({
+      rectangle: riverRectangle,
+      height: height,
       vertexFormat: Cesium.VertexFormat.DEFAULT,
     });
 
-    // 创建一个 GeometryInstance 来包含黄河的几何体
-    const yellowRiverGeometryInstance = new Cesium.GeometryInstance({
-      geometry: yellowRiverGeometry,
+    // 创建河流的几何实例
+    const riverGeometryInstance = new Cesium.GeometryInstance({
+      geometry: riverGeometry,
     });
 
-    // 创建一个 Primitive 来在场景中渲染黄河
-    const yellowRiverPrimitive = new Cesium.Primitive({
-      geometryInstances: yellowRiverGeometryInstance,
-      appearance: new Cesium.EllipsoidSurfaceAppearance({
-        material: new Cesium.Material({
-          fabric: {
-            type: "Water",
-            uniforms: {
-              baseWaterColor: new Cesium.Color(0.0, 0.5, 0.7, 1.0), // 黄河水的颜色，这里假设为蓝色
-              normalMap: Cesium.buildModuleUrl("Assets/Textures/waterNormals.jpg"), // 水面法线贴图
-              frequency: 1000.0, // 波纹频率
-              animationSpeed: 0.025, // 波纹动画速度
-              amplitude: 5.0, // 波纹振幅
-              specularIntensity: 0.5 // 镜面反射强度
-            }
+    // 配置河流的外观，使用水面材质
+    const riverAppearance = new Cesium.EllipsoidSurfaceAppearance({
+      material: new Cesium.Material({
+        fabric: {
+          type: 'Water',
+          uniforms: {
+            baseWaterColor: new Cesium.Color(riverColor[0] / 255, riverColor[1] / 255, riverColor[2] / 255, 1.0),
+            normalMap: Cesium.buildModuleUrl('Assets/Textures/waterNormals.jpg'), // 使用水面法线贴图
+            frequency: 1000.0, // 设置波纹频率
+            animationSpeed: 0.025, // 设置波纹动画速度
+            amplitude: 5.0, // 设置波纹振幅
+            specularIntensity: 0.5 // 设置镜面反射强度
           }
-        })
-      }),
+        }
+      })
     });
 
-    // 将黄河添加到 Cesium Viewer 的场景中
-    this.viewer.scene.primitives.add(yellowRiverPrimitive);
-    const center = Cesium.Cartesian3.fromDegrees(103.5, 35.0, 1000);
-    this.flyToLocation(center)
+    // 创建表示河流的Primitive并将其添加到场景中
+    const riverPrimitive = new Cesium.Primitive({
+      geometryInstances: riverGeometryInstance,
+      appearance: riverAppearance,
+    });
+
+    // 将河流Primitive添加到Cesium Viewer的场景中
+    this.viewer.scene.primitives.add(riverPrimitive);
+
+    // 计算并返回俯瞰中心位置的坐标
+    const center = Cesium.Cartesian3.fromDegrees((westLongitude + eastLongitude) / 2, (southLatitude + northLatitude) / 2, height + 500);
+    return center
   }
 
+  /**
+   * 异步加载并为3D瓦片集应用样式
+   * @param {Object} viewer Cesium的viewer对象，用于加载和显示3D瓦片集
+   * @param {string} url 3D瓦片集的URL地址
+   * @returns {Cesium.Cesium3DTileset} 返回加载并设置样式的瓦片集对象
+   */
+  async loadAndStyle3DTileset(viewer, url) {
+    // 从提供的URL异步加载3D瓦片集
+    const tileset = await Cesium.Cesium3DTileset.fromUrl(url);
+
+    // 将加载的瓦片集添加到viewer的场景中
+    viewer.scene.primitives.add(tileset);
+
+    // 设置瓦片集的样式，基于瓦片的高度使用不同的颜色进行着色
+    tileset.style = new Cesium.Cesium3DTileStyle({
+      color: {
+        conditions: [
+          ["${Height} >= 83", "color('purple')"],
+          ["${Height} >= 80", "color('red')"],
+          ["${Height} >= 70", "color('orange')"],
+          ["${Height} >= 12", "color('yellow')"],
+          ["${Height} >= 7", "color('lime')"],
+          ["${Height} >= 1", "color('DARKORANGE')"],
+          ["true", "color('blue')"],
+        ],
+      },
+    });
+    return tileset
+  }
+
+  /**
+   * 引入i3S数据服务和地形服务至Cesium场景
+   * @param {Cesium.Viewer} viewer Cesium观景器实例，用于加载和显示i3S数据和地形服务
+   * @param {string} elevationUrl 可选，国内地形服务的URL
+   * @param {string} i3sUrl 可选，国内i3S数据服务的URL
+   * @returns {Promise<Cesium.Cartesian3>} 返回一个Promise，解析为调整后的视点位置（中心点）
+   */
+  async loadDomesticData(viewer, elevationUrl, i3sUrl) {
+    try {
+      // 加载国内地形数据服务作为高程数据提供者
+      const domesticElevationProvider = await Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(elevationUrl);
+
+      // 配置i3S数据服务加载选项，集成地形服务
+      const i3sOptions = {
+        traceFetches: false, // 不追踪数据抓取过程
+        geoidTiledTerrainProvider: domesticElevationProvider, // 应用国内地形服务
+      };
+
+      // 加载i3S数据服务
+      const i3sDataProvider = await Cesium.I3SDataProvider.fromUrl(i3sUrl, i3sOptions);
+      viewer.scene.primitives.add(i3sDataProvider);
+
+      // 调整视角至i3S数据区域中心并提升高度
+      const viewCenter = Cesium.Rectangle.center(i3sDataProvider.extent);
+      viewCenter.height = 10000.0; // 视角高度设置为10000米
+      const destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(viewCenter);
+      return destination
+    } catch (error) {
+      console.error("加载数据时发生错误:", error);
+    }
+  }
 }
 export default CesiumUtils;
