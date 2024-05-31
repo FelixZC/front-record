@@ -406,83 +406,121 @@ class CesiumUtils {
    * @returns {Cesium.Cartesian3} 返回俯瞰中心位置的坐标
    */
   showRiver(westLongitude, southLatitude, eastLongitude, northLatitude, riverColor, height = 0) {
-    // 创建河流的矩形边界
-    const riverRectangle = Cesium.Rectangle.fromDegrees(
-      westLongitude, southLatitude,
-      eastLongitude, northLatitude
-    );
+    // 参数验证
+    if (!Number.isFinite(westLongitude) || !Number.isFinite(southLatitude) ||
+      !Number.isFinite(eastLongitude) || !Number.isFinite(northLatitude) ||
+      !Array.isArray(riverColor) || riverColor.length !== 3) {
+      console.error("无效的参数");
+      return;
+    }
 
-    // 根据河流边界创建 RectangleGeometry
-    const riverGeometry = new Cesium.RectangleGeometry({
-      rectangle: riverRectangle,
-      height: height,
-      vertexFormat: Cesium.VertexFormat.DEFAULT,
-    });
+    try {
+      // 创建河流的矩形边界
+      const riverRectangle = Cesium.Rectangle.fromDegrees(
+        westLongitude, southLatitude,
+        eastLongitude, northLatitude
+      );
 
-    // 创建河流的几何实例
-    const riverGeometryInstance = new Cesium.GeometryInstance({
-      geometry: riverGeometry,
-    });
+      // 根据河流边界创建 RectangleGeometry
+      const riverGeometry = new Cesium.RectangleGeometry({
+        rectangle: riverRectangle,
+        height: height,
+        vertexFormat: Cesium.VertexFormat.DEFAULT
+      });
 
-    // 配置河流的外观，使用水面材质
-    const riverAppearance = new Cesium.EllipsoidSurfaceAppearance({
-      material: new Cesium.Material({
-        fabric: {
-          type: 'Water',
-          uniforms: {
-            baseWaterColor: new Cesium.Color(riverColor[0] / 255, riverColor[1] / 255, riverColor[2] / 255, 1.0),
-            normalMap: Cesium.buildModuleUrl('Assets/Textures/waterNormals.jpg'), // 使用水面法线贴图
-            frequency: 1000.0, // 设置波纹频率
-            animationSpeed: 0.025, // 设置波纹动画速度
-            amplitude: 5.0, // 设置波纹振幅
-            specularIntensity: 0.5 // 设置镜面反射强度
+      // 创建几何实例
+      const riverGeometryInstance = new Cesium.GeometryInstance({
+        geometry: riverGeometry
+      });
+
+      // 配置河流的外观，使用水面材质
+      const riverAppearance = new Cesium.EllipsoidSurfaceAppearance({
+        material: new Cesium.Material({
+          fabric: {
+            type: 'Water',
+            uniforms: {
+              baseWaterColor: new Cesium.Color(riverColor[0] / 255, riverColor[1] / 255, riverColor[2] / 255, 1.0),
+              normalMap: Cesium.buildModuleUrl('Assets/Textures/waterNormals.jpg'), // 使用水面法线贴图
+              frequency: 1000.0, // 设置波纹频率
+              animationSpeed: 0.025, // 设置波纹动画速度
+              amplitude: 5.0, // 设置波纹振幅
+              specularIntensity: 0.5 // 设置镜面反射强度
+            }
           }
-        }
-      })
-    });
+        })
+      });
 
-    // 创建表示河流的Primitive并将其添加到场景中
-    const riverPrimitive = new Cesium.Primitive({
-      geometryInstances: riverGeometryInstance,
-      appearance: riverAppearance,
-    });
+      // 创建Primitive并添加到场景中
+      const riverPrimitive = new Cesium.Primitive({
+        geometryInstances: riverGeometryInstance,
+        appearance: riverAppearance
+      });
 
-    // 将河流Primitive添加到Cesium Viewer的场景中
-    this.viewer.scene.primitives.add(riverPrimitive);
+      this.viewer.scene.primitives.add(riverPrimitive);
 
-    // 计算并返回俯瞰中心位置的坐标
-    const center = Cesium.Cartesian3.fromDegrees((westLongitude + eastLongitude) / 2, (southLatitude + northLatitude) / 2, height + 500);
-    return center
+      // 计算并返回俯瞰中心位置的坐标
+      const center = Cesium.Cartesian3.fromDegrees((westLongitude + eastLongitude) / 2, (southLatitude + northLatitude) / 2, height + 500);
+      return center
+    } catch (error) {
+      console.error("创建河流时发生错误:", error);
+    }
   }
 
   /**
-   * 异步加载并为3D瓦片集应用样式
-   * @param {Object} viewer Cesium的viewer对象，用于加载和显示3D瓦片集
-   * @param {string} url 3D瓦片集的URL地址
-   * @returns {Cesium.Cesium3DTileset} 返回加载并设置样式的瓦片集对象
+   * 异步加载并为3D瓦片集应用样式。
+   * @param {string} url - 3D瓦片集的URL。
+   * @param {Object} options - 可选参数对象，用于配置瓦片集的加载和样式。
+   * @returns {Promise<Cesium.Cesium3DTileset>} 返回一个Promise，解析为加载并样式的3D瓦片集对象。
    */
-  async loadAndStyle3DTileset(viewer, url) {
-    // 从提供的URL异步加载3D瓦片集
-    const tileset = await Cesium.Cesium3DTileset.fromUrl(url);
+  async loadAndStyle3DTileset(url, options = {
+    // 优化加载性能的选项
+    preferLeaves: true, // 如果可能，优先加载瓦片集的叶子节点
+    skipLevelOfDetail: true, // 跳过细节级别，直接加载最低细节级别的瓦片
+    skipScreenSpaceErrorFactor: 16, // 跳过屏幕空间误差的因子
+    maximumScreenSpaceError: 16, // 最大屏幕空间误差
+    baseScreenSpaceError: 1024, // 基础屏幕空间误差
+    skipLevels: 1, // 跳过的瓦片集级别数
+    immediatelyLoadDesiredLevelOfDetail: false, // 是否立即加载所需的细节级别
+    cullWithChildrenBounds: false, // 是否使用子节点的边界进行裁剪
+    // maximumMemoryUsage: 512, // 最大内存使用量（以MB为单位）
+    // dynamicScreenSpaceError: true, // 是否启用动态屏幕空间误差
+    // dynamicScreenSpaceErrorDensity: 0.00278, // 动态屏幕空间误差的密度
+    // dynamicScreenSpaceErrorFactor: 4.0, // 动态屏幕空间误差的因子
+    // heightBasedColor: true, // 是否基于高度进行颜色着色
+  }) {
+    try {
+      // 从提供的URL异步加载3D瓦片集
+      const tileset = await Cesium.Cesium3DTileset.fromUrl(url, options.loadOptions);
 
-    // 将加载的瓦片集添加到viewer的场景中
-    viewer.scene.primitives.add(tileset);
+      // 将加载的瓦片集添加到viewer的场景中
+      this.viewer.scene.primitives.add(tileset);
 
-    // 设置瓦片集的样式，基于瓦片的高度使用不同的颜色进行着色
-    tileset.style = new Cesium.Cesium3DTileStyle({
-      color: {
-        conditions: [
-          ["${Height} >= 83", "color('purple')"],
-          ["${Height} >= 80", "color('red')"],
-          ["${Height} >= 70", "color('orange')"],
-          ["${Height} >= 12", "color('yellow')"],
-          ["${Height} >= 7", "color('lime')"],
-          ["${Height} >= 1", "color('DARKORANGE')"],
-          ["true", "color('blue')"],
-        ],
-      },
-    });
-    return tileset
+      // 根据options参数设置瓦片集的样式
+      const defaultStyle = {
+        color: {
+          // 默认条件颜色设置
+          conditions: [
+            ["${Height} >= 83", "color('purple')"],
+            ["${Height} >= 80", "color('red')"],
+            ["${Height} >= 70", "color('orange')"],
+            ["${Height} >= 12", "color('yellow')"],
+            ["${Height} >= 7", "color('lime')"],
+            ["${Height} >= 1", "color('DARKORANGE')"],
+            ["true", "color('blue')"],
+          ],
+        },
+      };
+
+      // 合并用户定义的样式和默认样式
+      const finalStyle = Object.assign({}, defaultStyle, options.style);
+
+      // 设置瓦片集的样式
+      tileset.style = new Cesium.Cesium3DTileStyle(finalStyle);
+
+      return tileset;
+    } catch (error) {
+      console.error('Failed to load and style 3D tileset:', error);
+    }
   }
 
   /**
@@ -492,26 +530,38 @@ class CesiumUtils {
    * @param {string} i3sUrl 可选，国内i3S数据服务的URL
    * @returns {Promise<Cesium.Cartesian3>} 返回一个Promise，解析为调整后的视点位置（中心点）
    */
-  async loadDomesticData(viewer, elevationUrl, i3sUrl) {
+  async loadDomesticData(elevationUrl, i3sUrl) {
+    if (!elevationUrl || !i3sUrl) {
+      console.error("URL参数不能为空");
+      return;
+    }
     try {
       // 加载国内地形数据服务作为高程数据提供者
       const domesticElevationProvider = await Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(elevationUrl);
 
       // 配置i3S数据服务加载选项，集成地形服务
       const i3sOptions = {
-        traceFetches: false, // 不追踪数据抓取过程
+        preferLeaves: true, // 优先加载瓦片集的叶子节点
+        skipLevelOfDetail: true, // 跳过细节级别
+        skipScreenSpaceErrorFactor: 16, // 跳过屏幕空间误差的因子
+        baseScreenSpaceError: 1024, // 基础屏幕空间误差
         geoidTiledTerrainProvider: domesticElevationProvider, // 应用国内地形服务
       };
 
       // 加载i3S数据服务
       const i3sDataProvider = await Cesium.I3SDataProvider.fromUrl(i3sUrl, i3sOptions);
-      viewer.scene.primitives.add(i3sDataProvider);
+      this.viewer.scene.primitives.add(i3sDataProvider);
 
       // 调整视角至i3S数据区域中心并提升高度
-      const viewCenter = Cesium.Rectangle.center(i3sDataProvider.extent);
-      viewCenter.height = 10000.0; // 视角高度设置为10000米
-      const destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(viewCenter);
-      return destination
+      const extent = i3sDataProvider.extent;
+      const viewCenter = Cesium.Rectangle.center(extent);
+      const terrainHeight = await viewer.scene.globe.getHeight(viewCenter);
+      viewCenter.height = terrainHeight + 10000.0; // 视角高度设置为地形高度之上10000米
+      const destination = Cesium.Cartesian3.fromRadians(viewCenter.longitude, viewCenter.latitude, viewCenter.height);
+      // viewer.camera.setView({
+      //   destination: destination
+      // });
+      return destination;
     } catch (error) {
       console.error("加载数据时发生错误:", error);
     }

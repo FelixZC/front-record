@@ -50,8 +50,8 @@ cesiumUtils.initViewer().then(async () => {
         }
     }
     /************************************************************************************************************************************************** */
-    // 使用函数
-    await cesiumUtils.loadAndStyle3DTileset(viewer, './assets/cesium-3d-tiles/tilesets/tileset/tileset.json')
+    const tilesetUrl = './assets/cesium-3d-tiles/tilesets/tileset/tileset.json'
+    await cesiumUtils.loadAndStyle3DTileset(tilesetUrl)
         .then((tileset) => {
             console.log('Tileset loaded and styled successfully!');
             viewer.flyTo(tileset)
@@ -60,20 +60,22 @@ cesiumUtils.initViewer().then(async () => {
             console.error('An error occurred while loading the tileset:', error);
         });
     /************************************************************************************************************************************************** */
-    // const pyramidCenter = createPyramid(viewer, {
-    //     longitude: -75.609580,
-    //     latitude: 40.042476,
-    //     scale: 50,
-    // })
+    const {
+        pyramidCenter,
+        pyramidPrimitive
+    } = createPyramid({
+        longitude: -75.609580,
+        latitude: 40.042476,
+        scale: 50,
+    })
+    viewer.scene.primitives.add(pyramidPrimitive)
     // cesiumUtils.flyToLocation(pyramidCenter)
     /************************************************************************************************************************************************** */
-    // 太伤显卡，注释掉
     // const elevationUrl = "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/EGM2008/ImageServer"
     // const i3sUrl = "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_3DObjects_1_7/SceneServer/layers/0"
-    // const dataCenter = await cesiumUtils.loadDomesticData(viewer, elevationUrl, i3sUrl)
+    // const dataCenter = await cesiumUtils.loadDomesticData(elevationUrl, i3sUrl)
     // cesiumUtils.flyToLocation(dataCenter)
     /************************************************************************************************************************************************** */
-    // 太卡了，注释掉
     // // 假设台湾山谷的经纬度范围
     // const westLongitude = 120.927083; // 西经
     // const southLatitude = 23.485136; // 南纬

@@ -8,7 +8,7 @@ import * as Cesium from 'cesium';
  * @param {number} options.scale - 金字塔的规模，默认为50。
  * @returns {Object} - 返回在viewer中创建的金字塔几何体对象中心。
  */
-export function createPyramid(viewer, options = {
+export function createPyramid(options = {
     longitude: 0,
     latitude: 0,
     scale: 50,
@@ -164,13 +164,14 @@ export function createPyramid(viewer, options = {
         fragmentShaderSource: f_shader(), // 片段着色器源代码
         vertexShaderSource: v_shader(), // 顶点着色器源代码
     })
-    viewer.scene.primitives.add(
-        new Primitive({
-            geometryInstances: instance,
-            appearance: appearance,
-            asynchronous: false,
-        })
-    )
-    const center = Cesium.Cartesian3.fromDegrees(options.longitude, options.latitude, options.scale * 10);
-    return center
+    const pyramidPrimitive = new Primitive({
+        geometryInstances: instance,
+        appearance: appearance,
+        asynchronous: false,
+    })
+    const pyramidCenter = Cesium.Cartesian3.fromDegrees(options.longitude, options.latitude, options.scale * 10);
+    return {
+        pyramidPrimitive,
+        pyramidCenter
+    }
 }

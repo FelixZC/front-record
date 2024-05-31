@@ -19,8 +19,8 @@ cesiumUtils.initViewer({
   shadows: false,
 }).then(async () => {
   const viewer = cesiumUtils.viewer;
-  //官网的token，不能用的，丢一边吧，不申请访问请求域名受限
-  const token = '5d22d49fdc586cb5caed68bfb12d1e6b';
+  //不申请访问请求域名受限
+  const token = 'your token';
   // 服务域名
   const tdtUrl = 'https://t{s}.tianditu.gov.cn/';
   // 服务负载子域
