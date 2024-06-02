@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Image to Text with Tesseract.js</title>
+    <!-- 引入Tesseract.js -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@latest/dist/tesseract.min.js"></script>
+</head>
+
+<body>
+
+    <h2>图片转文字示例</h2>
+    <input type="file" accept="image/*" id="imageUpload">
+    <button onclick="recognizeText()">识别图片中的文字</button>
+    <div id="result"></div>
+
+    <script>
+        // Tesseract OCR 支持多语言识别
+        // 例如:
+        // - 简体中文: 'chi_sim'
+        // - 繁体中文: 'chi_tra'
+        // - 英语: 'eng'
+        // - 日语: 'jpn'
+        // - 更多语言: 'deu'(德语), 'fra'(法语), 'spa'(西班牙语)等
+        // 使用前需下载相应语言的.traineddata文件并配置路径
+        // 查阅Tesseract官方文档获取所有支持语言及最新信息
+        async function recognizeTextFromImage(file) {
+            // 确保Tesseract已加载
+            await Tesseract.ready;
+
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve) => {
+                img.onload = resolve;
+            });
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+
+            const result = await Tesseract.recognize(canvas, ['chi_sim', 'chi_tra', 'eng', 'jpn'], {
+                logger: m => console.log(m)
+            });
+
+            return result.data.text;
+        }
+
+        function recognizeText() {
+            const input = document.getElementById('imageUpload');
+            if (input.files && input.files[0]) {
+                recognizeTextFromImage(input.files[0])
+                    .then(text => {
+                        document.getElementById('result').innerText = `识别结果:\n${text}`;
+                    })
+                    .catch(err => console.error('识别错误:', err));
+            } else {
+                alert('请先选择一张图片！');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
