@@ -1,0 +1,1 @@
+export const getConfig = () => process.env.MY_CONFIG
