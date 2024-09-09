@@ -1,4 +1,4 @@
-#### model-paactice
+#### model-practice
  Tesseract，TensorFlow 引用模型练习
 
  学习TensorFlow是一个循序渐进的过程，从基础概念到实践应用，下面是一份学习指南，旨在帮助你入门并逐步掌握TensorFlow的使用：
